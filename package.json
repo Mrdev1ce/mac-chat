@@ -1,0 +1,13 @@
+{
+  "name": "mac-chat",
+  "version": "0.0.1",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "angular": "~1.5.9",
+    "angular-ui-router": "~0.3.2",
+    "normalize-css": "^2.3.1"
+  }
+}

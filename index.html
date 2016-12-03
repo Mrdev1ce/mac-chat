@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <!--LIBS-->
+    <link rel="stylesheet" href="node_modules/normalize-css/normalize.css">
+
+    <link rel="stylesheet" href="src/common/styles/main.css">
+
+    <!--PAGES-->
+    <link rel="stylesheet" href="src/login/login.style.css">
+  </head>
+  <body ng-app="macChat">
+    <div ui-view class="main-container"></div>
+
+    <!--LIBS-->
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+
+    <!--CONFIG-->
+    <script src="src/index.module.js"></script>
+    <script src="src/index.config.js"></script>
+
+    <!--PAGES-->
+    <script src="src/login/login.controller.js"></script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+.login-page {
+  display: flex;
+  align-content: center;
+  height: 100%;
+}
+
+.login-page .login-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-page .login-form .login-form-content {
+  width: 50%;
+  max-width: 300px;
+}
+
+.login-page .login-form .login-form-control:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.login-page .login-form .login-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.form-control {
+  width: 100%;
+}
+
+.form-control .form-control-label {
+  display: block;
+}
+
+.form-control .form-control-input {
+  display: block;
+  width: 100%;
+}
