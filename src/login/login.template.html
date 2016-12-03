@@ -3,14 +3,19 @@
     <div class="login-form-content">
       <div class="form-control login-form-control">
         <label class="form-control-label" for="userName">Login</label>
-        <input class="form-control-input" type="text" id="userName"/>
+        <input class="form-control-input"
+               ng-model="vm.userName"
+               type="text"
+               id="userName"/>
       </div>
-      <div class="form-control login-form-control">
+      <!--<div class="form-control login-form-control">
         <label class="form-control-label" for="password">Password</label>
         <input class="form-control-input" type="password" id="password"/>
-      </div>
+      </div>-->
       <div class="login-form-actions">
-        <button type="button">Sign in</button>
+        <button type="button"
+                ng-click="vm.signIn()"
+                ng-disabled="!vm.userName">Sign in</button>
       </div>
     </div>
   </form>
