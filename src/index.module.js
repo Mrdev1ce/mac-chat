@@ -1,2 +1,5 @@
 angular
-  .module('macChat', ['ui.router']);
+  .module('macChat', [
+    'ui.router',
+    'btford.socket-io'
+    ]);

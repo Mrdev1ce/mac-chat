@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="src/common/styles/main.css">
 
     <!--PAGES-->
-    <link rel="stylesheet" href="src/login/login.style.css">
+    <link rel="stylesheet" href="src/pages/login/login.style.css">
   </head>
   <body ng-app="macChat">
     <div ui-view class="main-container"></div>
@@ -17,6 +17,8 @@
     <!--LIBS-->
     <script src="node_modules/angular/angular.js"></script>
     <script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script src="node_modules/angular-socket-io/socket.js"></script>
 
     <!--CONFIG-->
     <script src="src/index.module.js"></script>
@@ -24,9 +26,11 @@
 
     <!--COMMON-->
     <script src="src/common/services/user.service.js"></script>
+    <script src="src/common/services/socket.service.js"></script>
 
     <!--PAGES-->
-    <script src="src/login/login.controller.js"></script>
-    <script src="src/chat/chat.controller.js"></script>
+    <script src="src/pages/login/login.controller.js"></script>
+    <script src="src/pages/shell/shell.controller.js"></script>
+    <script src="src/pages/chat/chat.controller.js"></script>
   </body>
 </html>

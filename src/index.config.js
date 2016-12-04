@@ -1,24 +1,33 @@
 angular
   .module('macChat')
-  .constant('BE_API', 'http://localhost:3000/api')
+  .constant('BE_API', 'http://localhost:3000')
   .provider('states', function() {
     var states = {};
 
     states.login = {
       url: '/login',
       controller: 'loginCtrl as vm',
-      templateUrl: 'src/login/login.template.html',
+      templateUrl: 'src/pages/login/login.template.html',
       data: {
         name: 'login'
+      }
+    };
+
+    states.shell = {
+      url: '',
+      controller: 'shellCtrl as vm',
+      template: '<ui-view />',
+      data: {
+        name: 'shell'
       }
     };
 
     states.chat = {
       url: '/chat',
       controller: 'chatCtrl as vm',
-      templateUrl: 'src/chat/chat.template.html',
+      templateUrl: 'src/pages/chat/chat.template.html',
       data: {
-        name: 'chat'
+        name: `${states.shell.data.name}.chat`
       }
     };
 
@@ -40,5 +49,15 @@ angular
         $stateProvider.state(state.data.name, state);
       }
     }
-    //states.forEach(state => $stateProvider.state(state.data.name, state));
+  })
+  .run(function($rootScope, $state, states, userService) {
+    $rootScope.$on('$stateChangeStart', (event, toState) => {
+      if (toState.name === states.login.data.name && userService.getUserId()) {
+        event.preventDefault();
+        $state.go(states.chat.data.name);
+      } else if (toState.name !== states.login.data.name && !userService.getUserId()) {
+        event.preventDefault();
+        $state.go(states.login.data.name);
+      }
+    });
   });

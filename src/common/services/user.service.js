@@ -7,10 +7,11 @@ angular
     this.getUserId = getUserId;
 
     function signInAsUser(userName) {
-      return $http.post(BE_API + '/SignInAsUser', {userName})
+      return $http.post(BE_API + '/api/SignInAsUser', {userName})
         .then(res => {
           console.log(res.data);
-          return res.data;
+          userId = res.data;
+          return userId;
         });
     }
 
