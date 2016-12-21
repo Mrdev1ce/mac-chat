@@ -49,7 +49,19 @@ app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
-})
+});
+
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+  console.log(url);
+  if (/(https|wss):\/\/localhost/.test(url)) {
+    // Verification logic.
+    event.preventDefault();
+    callback(true);
+    console.log('here');
+  } else {
+    callback(false);
+  }
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

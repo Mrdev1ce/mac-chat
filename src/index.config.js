@@ -1,6 +1,6 @@
 angular
   .module('macChat')
-  .constant('BE_API', 'http://localhost:3000')
+  .constant('BE_API', 'https://localhost:3443')
   .provider('states', function() {
     var states = {};
 
