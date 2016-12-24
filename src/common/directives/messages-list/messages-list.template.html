@@ -1,5 +1,6 @@
 <!--<div class="messages-list-container">-->
     <div ng-repeat="message in vm.messages track by $index"
+         ng-class="{'my-message': message.isMyMessage}"
          class="message-container">
       <div class="message">
         <div class="message-text">{{::message.text}}</div>

@@ -1,0 +1,28 @@
+chats-list > .chat {
+  display: flex;
+  padding: 10px;
+  cursor: pointer;
+  align-items: center;
+}
+
+chats-list > .chat.active {
+  background: #6c58ff;
+  color: #fff;
+}
+
+chats-list > .chat > .chat-picture {
+  background: url(../../../assets/img/user.png) no-repeat;
+  background-size: cover;
+  height: 25px;
+  width: 25px;
+  margin-right: 5px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+chats-list > .chat > .chat-name {
+  flex-grow: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

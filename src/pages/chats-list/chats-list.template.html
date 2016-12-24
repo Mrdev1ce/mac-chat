@@ -1,0 +1,7 @@
+<div class="chats-list-page">
+  <chats-list chats="vm.chats"
+              active-chat-id="vm.activeChatId"
+              on-active-id-changed="vm.onActiveIdChanged(chatId)">
+  </chats-list>
+  <ui-view class="chats-list-page-chat"></ui-view>
+</div>

@@ -1,6 +1,6 @@
 angular
   .module('macChat')
-  .controller('chatCtrl', function(Message) {
+  .controller('chatPageCtrl', function(Message) {
     var vm = this;
 
     vm.messages = [];

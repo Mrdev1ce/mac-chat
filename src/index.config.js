@@ -6,7 +6,7 @@ angular
 
     states.login = {
       url: '/login',
-      controller: 'loginCtrl as vm',
+      controller: 'loginPageCtrl as vm',
       templateUrl: 'src/pages/login/login.template.html',
       data: {
         name: 'login'
@@ -22,12 +22,21 @@ angular
       }
     };
 
+    states.chatsList = {
+      url: '/chats-list',
+      controller: 'chatsListPageCtrl as vm',
+      templateUrl: 'src/pages/chats-list/chats-list.template.html',
+      data: {
+        name: `${states.shell.data.name}.chatsList`
+      }
+    }
+
     states.chat = {
-      url: '/chat',
-      controller: 'chatCtrl as vm',
+      url: '/chat/:userId',
+      controller: 'chatPageCtrl as vm',
       templateUrl: 'src/pages/chat/chat.template.html',
       data: {
-        name: `${states.shell.data.name}.chat`
+        name: `${states.chatsList.data.name}.chat`
       }
     };
 

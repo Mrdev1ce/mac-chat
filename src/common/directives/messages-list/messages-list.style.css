@@ -25,6 +25,15 @@ messages-list > .message-container > .message {
   padding: 10px;
 }
 
+messages-list > .message-container.my-message {
+  margin-left: auto;
+  /*#b3ffb6*/
+}
+
+messages-list > .message-container.my-message > .message {
+  background: #b3ffb6;
+}
+
 messages-list .message > .message-time {
   text-align: right;
   margin-top: 5px;

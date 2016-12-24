@@ -1,0 +1,7 @@
+<div ng-repeat="chat in vm.chats"
+     ng-class="{'active': vm.activeChatId === chat.userId}"
+     ng-click="vm.selectChat(chat.userId)"
+     class="chat">
+  <div class="chat-picture"></div>
+  <div class="chat-name">{{::chat.userName}}</div>
+</div>
