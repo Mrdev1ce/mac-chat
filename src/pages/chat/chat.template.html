@@ -1,3 +1,11 @@
 <div class="chat-page">
-  <h1>Chat page</h1>
+  <messages-list messages="vm.messages"></messages-list>
+  <form ng-submit="vm.onSubmitMessage()"
+        class="chat-page-user-message-container">
+    <input ng-model="vm.currentMessageText"
+           class="chat-page-user-message-container-input"
+           type="text"
+           placeholder="Write your message here" />
+    <input type="submit" class="chat-page-user-message-container-submit">
+  </div>
 </div>

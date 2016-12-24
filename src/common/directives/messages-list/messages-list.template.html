@@ -1,0 +1,9 @@
+<!--<div class="messages-list-container">-->
+    <div ng-repeat="message in vm.messages track by $index"
+         class="message-container">
+      <div class="message">
+        <div class="message-text">{{::message.text}}</div>
+        <div class="message-time">{{::message.time | date:'HH:mm'}}</div>
+      </div>
+    </div>
+  <!--</div>-->

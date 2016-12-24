@@ -52,12 +52,10 @@ app.on('activate', () => {
 });
 
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-  console.log(url);
   if (/(https|wss):\/\/localhost/.test(url)) {
     // Verification logic.
     event.preventDefault();
     callback(true);
-    console.log('here');
   } else {
     callback(false);
   }

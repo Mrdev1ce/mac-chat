@@ -51,13 +51,13 @@ angular
     }
   })
   .run(function($rootScope, $state, states, userService) {
-    $rootScope.$on('$stateChangeStart', (event, toState) => {
-      if (toState.name === states.login.data.name && userService.getUserId()) {
-        event.preventDefault();
-        $state.go(states.chat.data.name);
-      } else if (toState.name !== states.login.data.name && !userService.getUserId()) {
-        event.preventDefault();
-        $state.go(states.login.data.name);
-      }
-    });
+    // $rootScope.$on('$stateChangeStart', (event, toState) => {
+    //   if (toState.name === states.login.data.name && userService.getUserId()) {
+    //     event.preventDefault();
+    //     $state.go(states.chat.data.name);
+    //   } else if (toState.name !== states.login.data.name && !userService.getUserId()) {
+    //     event.preventDefault();
+    //     $state.go(states.login.data.name);
+    //   }
+    // });
   });
