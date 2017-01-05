@@ -1,6 +1,17 @@
 angular
   .module('macChat')
   .constant('BE_API', 'https://localhost:3443')
+  .constant('SOCKET_EVENTS', {
+    AUTH: 'auth',
+    CONNECT: 'connect',
+    DISCONNECT: 'disconnect',
+    JOINED_CHAT: 'joined_chat',
+    UPDATE_CHATS: 'update_chats',
+    INIT_CONVERSATION: 'init_conversation',
+    UPDATE_MESSAGES: 'update_messages',
+    MESSAGE_SEND: 'message_send',
+    MESSAGE_RECIEVED: 'message_recieved'
+  })
   .provider('states', function() {
     var states = {};
 
@@ -17,6 +28,11 @@ angular
       url: '',
       controller: 'shellCtrl as vm',
       template: '<ui-view />',
+      resolve: {
+        socketConnection: function(socketService) {
+          return socketService.initConnection();
+        }
+      },
       data: {
         name: 'shell'
       }
@@ -32,7 +48,7 @@ angular
     }
 
     states.chat = {
-      url: '/chat/:userId',
+      url: '/chat/{partnerName:[a-zA-Z0-9]+}',
       controller: 'chatPageCtrl as vm',
       templateUrl: 'src/pages/chat/chat.template.html',
       data: {
@@ -60,13 +76,13 @@ angular
     }
   })
   .run(function($rootScope, $state, states, userService) {
-    // $rootScope.$on('$stateChangeStart', (event, toState) => {
-    //   if (toState.name === states.login.data.name && userService.getUserId()) {
-    //     event.preventDefault();
-    //     $state.go(states.chat.data.name);
-    //   } else if (toState.name !== states.login.data.name && !userService.getUserId()) {
-    //     event.preventDefault();
-    //     $state.go(states.login.data.name);
-    //   }
-    // });
+    $rootScope.$on('$stateChangeStart', (event, toState) => {
+      if (toState.name === states.login.data.name && userService.getUserId()) {
+        event.preventDefault();
+        $state.go(states.chatsList.data.name);
+      } else if (toState.name !== states.login.data.name && !userService.getUserId()) {
+        event.preventDefault();
+        $state.go(states.login.data.name);
+      }
+    });
   });

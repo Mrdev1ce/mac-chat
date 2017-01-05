@@ -7,6 +7,9 @@ angular
 
     function signIn() {
       userService.signInAsUser(vm.userName)
-        .then(() => $state.go(states.chatsList.data.name));
+        .then(() => {
+          userService.setUserId(vm.userName);
+          $state.go(states.chatsList.data.name);
+      });
     }
   })

@@ -1,20 +1,33 @@
 angular
   .module('macChat')
-  .controller('chatsListPageCtrl', function($state, states) {
+  .controller('chatsListPageCtrl', function($state, $stateParams, states, socketService, SOCKET_EVENTS) {
     var vm = this;
 
     vm.onActiveIdChanged = onActiveIdChanged;
+    // vm.chats = [{
+    //   userId: 1,
+    //   userName: 'Person One'
+    // }, {
+    //   userId: 2,
+    //   userName: 'Person Two'
+    // }];
+    vm.chats = [];
+    vm.activeChatId = $stateParams.partnerName;
 
-    vm.chats = [{
-      userId: 1,
-      userName: 'Person One'
-    }, {
-      userId: 2,
-      userName: 'Person Two'
-    }];
-    vm.activeChatId = null;
+    init();
+
+    function init() {
+      socketService.socket.emit(SOCKET_EVENTS.JOINED_CHAT);
+      updateChats();
+    }
 
     function onActiveIdChanged(chatId) {
-      $state.go(states.chat.data.name, {userId: chatId});
+      $state.go(states.chat.data.name, {partnerName: chatId});
+    }
+
+    function updateChats() {
+      socketService.socket.on(SOCKET_EVENTS.UPDATE_CHATS, function(chats){
+        vm.chats = chats;
+      });
     }
   });
