@@ -1,9 +1,13 @@
 {
   "name": "mac-chat",
   "version": "0.0.1",
+  "description": "Chat application",
+  "author": "mrdevice",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "dependencies": {
     "angular": "~1.5.9",
@@ -11,5 +15,11 @@
     "angular-ui-router": "~0.3.2",
     "normalize-css": "^2.3.1",
     "socket.io-client": "^1.7.1"
+  },
+  "build": {
+    "appId": "mac-chat",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    }
   }
 }

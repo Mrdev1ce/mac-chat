@@ -4,13 +4,6 @@ angular
     var vm = this;
 
     vm.onActiveIdChanged = onActiveIdChanged;
-    // vm.chats = [{
-    //   userId: 1,
-    //   userName: 'Person One'
-    // }, {
-    //   userId: 2,
-    //   userName: 'Person Two'
-    // }];
     vm.chats = [];
     vm.activeChatId = $stateParams.partnerName;
 

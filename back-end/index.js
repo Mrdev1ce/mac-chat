@@ -22,17 +22,23 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 httpServer.listen(3000);
 httpsServer.listen(3443);
 
-let User = require('./user.model');
+let User = require('./models/user.model');
 const CONSTANTS = require('./constants');
 const SOCKET_EVENTS = CONSTANTS.SOCKET_EVENTS;
+let conversationModule = require('./conversation');
 let users = [];
-let userConversationMap = {};
-let conversations = {};
 
 app.post('/api/SignInAsUser', function(req, res) {
-  console.log('SignInAsUser > ', req.body);
-
-  users.push(new User(null, req.body.userName));
+  let name = req.body.userName;
+  let existingUser = users.find(user => user.name === name);
+  
+  if (existingUser) {
+    existingUser.socketId = null;
+    console.log('SingInAsUser: Existing username: ', name);
+  } else {
+    users.push(new User(null, name));
+    console.log('SingInAsUser: New username: ', name);
+  }
   res.send(req.body.userName);
 });
 
@@ -47,8 +53,8 @@ socket.on(SOCKET_EVENTS.CONNECT, function(socketInstance) {
 });
 
 function onAuth(socketInstance, name, clientCallback) {
-  let existingUser = users.findIndex(user => user.name === name);
-  if (existingUser > -1) {
+  let existingUser = users.find(user => user.name === name);
+  if (existingUser) {
     existingUser.socketId = socketInstance.id;
     console.log('AUTH: Existing username: ', name, ' ', socketInstance.id);
   } else {
@@ -59,12 +65,12 @@ function onAuth(socketInstance, name, clientCallback) {
 }
 
 function onDisconnect(socketInstance) {
-  let userToDeleteIndex = users.findIndex(user => user.socketId === socketInstance.id);
-  if (userToDeleteIndex > -1) {
-    users.splice(userToDeleteIndex, 1);
-  }
+  // let userToDeleteIndex = users.findIndex(user => user.socketId === socketInstance.id);
+  // if (userToDeleteIndex > -1) {
+  //   users.splice(userToDeleteIndex, 1);
+  // }
   socketInstance.removeAllListeners();
-  console.log('DISCONNECT: Index user to delete: ', userToDeleteIndex);
+  console.log('DISCONNECT: Socket was disconnected: ', socketInstance.id);
 }
 
 function onJoinedChat() {
@@ -72,7 +78,8 @@ function onJoinedChat() {
   for (socketId in connectedSockets) {
     if (connectedSockets.hasOwnProperty(socketId)) {
       let connectedInstance = connectedSockets[socketId];
-      let chats = users.filter(user => user.socketId !== socketId);
+      let currentUser = users.find(user => user.socketId === socketId);
+      let chats = users.filter(user => user.name !== currentUser.name);
       connectedInstance.emit(SOCKET_EVENTS.UPDATE_CHATS, chats);
     }
   }
@@ -80,34 +87,13 @@ function onJoinedChat() {
 
 function onInitConversation(socketInstance, partnerName) {
   let currentUser = users.find(user => user.socketId === socketInstance.id);
-  let userMessages = getConversation(currentUser.name, partnerName);
+  let userMessages = conversationModule.getConversation(currentUser.name, partnerName);
   socketInstance.emit(SOCKET_EVENTS.UPDATE_MESSAGES, userMessages);
-}
-
-function getConversation(firstUserName, secondUserName) {
-  let compositeKey = firstUserName + secondUserName;
-  let conversationKey = getConversationKey(compositeKey);
-  if (!conversationKey) {
-    conversationKey = initConversationKey(firstUserName, secondUserName);
-    conversations[conversationKey] = [];
-  }
-  return conversations[conversationKey];
-}
-
-function getConversationKey(compositeKey) {
-  return userConversationMap[compositeKey];
-}
-
-function initConversationKey(firstUserName, secondUserName) {
-  let conversationKey = new Date().valueOf();
-  userConversationMap[firstUserName + secondUserName] = conversationKey;
-  userConversationMap[secondUserName + firstUserName] = conversationKey;
-  return conversationKey;
 }
 
 function onMessageSend(socketInstance, data) {
   let currentUser = users.find(user => user.socketId === socketInstance.id);
-  let messages = getConversation(currentUser.name, data.partnerName);
+  let messages = conversationModule.getConversation(currentUser.name, data.partnerName);
   let partner = users.find(user => user.name === data.partnerName);
   let partnerSocketInstance = socket.sockets.connected[partner.socketId];
   messages.push({
@@ -116,5 +102,8 @@ function onMessageSend(socketInstance, data) {
     time: new Date()
   });
   socketInstance.emit(SOCKET_EVENTS.UPDATE_MESSAGES, messages);
-  partnerSocketInstance.emit(SOCKET_EVENTS.UPDATE_MESSAGES, messages);
+
+  if (partnerSocketInstance) {
+    partnerSocketInstance.emit(SOCKET_EVENTS.UPDATE_MESSAGES, messages);
+  }
 }
