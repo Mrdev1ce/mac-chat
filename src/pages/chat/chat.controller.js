@@ -1,27 +1,31 @@
 angular
   .module('macChat')
-  .controller('chatPageCtrl', function($stateParams, Message, socketService, SOCKET_EVENTS, userService) {
+  .controller('chatPageCtrl', function($scope, $stateParams, Message, socketService, SOCKET_EVENTS, userService) {
     var vm = this;
 
     vm.messages = [];
 
     vm.onSubmitMessage = onSubmitMessage;
 
+    $scope.$on('$destroy', unsubscribeSocketListners);
+
     init();
 
     function init() {
       socketService.socket.emit(SOCKET_EVENTS.INIT_CONVERSATION, $stateParams.partnerName);
-      onUpdateMessages();
+      socketService.socket.on(SOCKET_EVENTS.UPDATE_MESSAGES, onUpdateMessages);
     }
 
-    function onUpdateMessages() {
-      socketService.socket.on(SOCKET_EVENTS.UPDATE_MESSAGES, function(messages) {
-        let currentUserName = userService.getUserId();
+    function unsubscribeSocketListners() {
+      socketService.socket.removeListener(SOCKET_EVENTS.UPDATE_MESSAGES, onUpdateMessages);
+    }
+
+    function onUpdateMessages(messages) {
+      let currentUserName = userService.getUserId();
         vm.messages = messages;
         vm.messages.forEach(message => {
           message.isMyMessage = currentUserName === message.authorName;
         });
-      });
     }
 
     function onSubmitMessage() {
